@@ -4,7 +4,6 @@
   "description": "Azure Function App for retrieving FRED data and storing it in an Azure database",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./GetFredData/index.js"
   },
   "keywords": [],
