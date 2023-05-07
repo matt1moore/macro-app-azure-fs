@@ -57,7 +57,7 @@ async function storeDataInAzureDB(context, data) {
     authentication: {
       type: 'default',
       options: {
-        userName: process.env.AZURE_DB_USER,
+        userName: process.env.AZURE_DB_USERNAME,
         password: process.env.AZURE_DB_PASS,
       },
     },
