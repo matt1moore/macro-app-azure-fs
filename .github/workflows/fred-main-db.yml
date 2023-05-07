@@ -13,6 +13,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: 🔎 Check IP
+      run: curl https://api.ipify.org
     
     - name: Deploy to Azure SQL Database
       uses: azure/sql-action@v1.2
