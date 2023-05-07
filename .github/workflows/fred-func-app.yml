@@ -1,59 +1,44 @@
-name: Azure Function App CI/CD
+# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy Node.js project to Azure Function App - fred-func-app
 
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
+env:
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: './azure-function' # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '18.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: 'Checkout GitHub Action'
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - name: Setup Node ${{ env.NODE_VERSION }} Environment
+        uses: actions/setup-node@v1
         with:
-          node-version: '14'
+          node-version: ${{ env.NODE_VERSION }}
 
-      - name: Install dependencies
-        run: npm ci
+      - name: 'Resolve Project Dependencies Using Npm'
+        shell: bash
+        run: |
+          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
+          npm install
+          npm run build --if-present
+          npm run test --if-present
+          popd
 
-      - name: Build
-        run: npm run build --if-present
-
-      - name: Publish Artifact
-        uses: actions/upload-artifact@v2
+      - name: 'Run Azure Functions Action'
+        uses: Azure/functions-action@v1
+        id: fa
         with:
-          name: function-app
-          path: .
-
-  deploy-to-azure:
-    needs: build-and-deploy
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Download Artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: function-app
-
-      - name: Set up Azure CLI
-        uses: azure/cli@v1.2.0
-
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Deploy to Azure Function App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: fred-func-app
-          publish-profile: ${{ secrets.AZURE_FUNCTIONAPP_PUBLISH_PROFILE }}
-          package: .
+          app-name: 'fred-func-app'
+          slot-name: 'production'
+          package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
+          publish-profile: ${{ secrets.AzureAppService_PublishProfile_1234 }}
