@@ -13,14 +13,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: 🔎 Check IP
-      run: curl https://api.ipify.org
     
     - name: Deploy to Azure SQL Database
-      uses: azure/sql-action@v1.2
+      uses: Azure/sql-action@v1.2
       with:
-        server-name: final-economic-server
         connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
-        sql-file: ./database/fred-schema.sql
     
