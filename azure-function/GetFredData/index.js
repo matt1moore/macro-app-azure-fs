@@ -27,6 +27,7 @@ module.exports = async function (context, req) {
       body: 'Data stored successfully',
     };
     console.log('Data has stored successfully')
+    console.log(unemploymentData)
   } catch (error) {
     context.res = {
       status: 500,
