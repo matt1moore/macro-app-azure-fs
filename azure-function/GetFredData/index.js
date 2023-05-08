@@ -53,8 +53,6 @@ async function fetchData(seriesId) {
 }
 
 async function storeDataInAzureDB(context, data) {
-  console.log("Username: " + process.env.AZURE_DB_USERNAME);
-  console.log("Password: " + process.env.AZURE_DB_PASS);
   const azureConfig = {
     server: 'final-economic-server.database.windows.net',
     authentication: {
@@ -81,6 +79,7 @@ async function storeDataInAzureDB(context, data) {
       console.log('Connection to database occurred successfully')
       insertData(context, connection, data);
     } else {
+      console.log(connection.state)
       throw new Error('Connection is not in the LoggedIn state');
     }
   });
@@ -117,6 +116,7 @@ function insertData(context, connection, data) {
       connection.execSql(request);
     } else {
       // Handle the case when the connection is not in the LoggedIn state
+      console.log(connection.state)
       throw new Error('Connection is not in the LoggedIn state');
     }
     request.parameters = [];
