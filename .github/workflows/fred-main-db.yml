@@ -13,6 +13,9 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Get Runner IP
+      run: echo "Runner IP: ${{ github.runner.ip }}"
     
     - name: Deploy to Azure SQL Database
       uses: Azure/sql-action@v1.2
