@@ -28,6 +28,7 @@ module.exports = async function (context, req) {
     };
     console.log('Data has stored successfully')
     console.log(unemploymentData)
+    console.log(cpiInflationData)
   } catch (error) {
     context.res = {
       status: 500,
