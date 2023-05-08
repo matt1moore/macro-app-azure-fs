@@ -28,8 +28,6 @@ module.exports = async function (context, req) {
       body: 'Data stored successfully',
     };
     console.log('Data has stored successfully')
-    console.log(unemploymentData)
-    console.log(cpiInflationData)
   } catch (error) {
     context.res = {
       status: 500,
@@ -55,6 +53,8 @@ async function fetchData(seriesId) {
 }
 
 async function storeDataInAzureDB(context, data) {
+  console.log("Username: " + process.env.AZURE_DB_USERNAME);
+  console.log("Password: " + process.env.AZURE_DB_PASS);
   const azureConfig = {
     server: 'final-economic-server.database.windows.net',
     authentication: {
@@ -75,7 +75,7 @@ async function storeDataInAzureDB(context, data) {
   connection.on('connect', (err) => {
     if (err) {
       context.log.error(err);
-      console.log(err)
+      console.log(err);
       throw err;
     } else if (connection.state === 'LoggedIn') {
       console.log('Connection to database occurred successfully')
@@ -104,7 +104,7 @@ function insertData(context, connection, data) {
     } else {
       context.log('Data inserted successfully');
       console.log('Data inserted successfully')
-      connection.close();
+      // connection.close();
     }
   });
 
@@ -121,4 +121,5 @@ function insertData(context, connection, data) {
     }
     request.parameters = [];
   });
+  connection.close();
 }
