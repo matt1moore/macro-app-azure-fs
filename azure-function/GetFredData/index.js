@@ -75,11 +75,11 @@ async function storeDataInAzureDB(context, data) {
       context.log.error(err);
       console.log(err);
       throw err;
-    } else if (connection.state === 'LoggedIn') {
+    } else if (connection.state.name === 'LoggedIn') {
       console.log('Connection to database occurred successfully')
       insertData(context, connection, data);
     } else {
-      console.log(connection.state)
+      console.log(connection.state.name)
       throw new Error('Connection is not in the LoggedIn state');
     }
   });
@@ -112,11 +112,11 @@ function insertData(context, connection, data) {
     request.addParameter('date', TYPES.Date, new Date(item.date));
     request.addParameter('value', TYPES.Float, item.value);
 
-    if (connection.state === 'LoggedIn') {
+    if (connection.state.name === 'LoggedIn') {
       connection.execSql(request);
     } else {
       // Handle the case when the connection is not in the LoggedIn state
-      console.log(connection.state)
+      console.log(connection.state.name)
       throw new Error('Connection is not in the LoggedIn state');
     }
     request.parameters = [];
