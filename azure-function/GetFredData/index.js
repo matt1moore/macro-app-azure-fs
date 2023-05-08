@@ -100,7 +100,7 @@ function insertData(context, connection, data) {
     } else {
       context.log('Data inserted successfully');
       console.log('Data inserted successfully')
-      // connection.close();
+      connection.close();
     }
   });
 
@@ -112,5 +112,4 @@ function insertData(context, connection, data) {
     connection.execSql(request);
     request.parameters = [];
   });
-  connection.close();
 }
