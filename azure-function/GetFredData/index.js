@@ -53,7 +53,7 @@ async function fetchData(seriesId) {
 
 async function storeDataInAzureDB(context, data) {
   const azureConfig = {
-    server: 'final-economic-server',
+    server: 'final-economic-server.database.windows.net',
     authentication: {
       type: 'default',
       options: {
