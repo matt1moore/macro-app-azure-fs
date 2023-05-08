@@ -64,3 +64,4 @@ Another push ADO.NET connection string
 Another push for firewall issue
 Another push for removing all rules for firewall
 Another minor change for deployment
+Small deployment change, stop due to stopped func
