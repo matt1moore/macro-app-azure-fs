@@ -26,14 +26,14 @@ module.exports = async function (context, req) {
       status: 200,
       body: 'Data stored successfully',
     };
-    console.log('Data stored successfully')
+    console.log('Data has stored successfully')
   } catch (error) {
     context.res = {
       status: 500,
       body: 'An error occurred while storing data',
     };
     context.log.error(error);
-    console.error('An error occurred while storing data')
+    console.error('An error has occurred while storing data')
   }
 };
 
@@ -72,8 +72,10 @@ async function storeDataInAzureDB(context, data) {
   connection.on('connect', (err) => {
     if (err) {
       context.log.error(err);
+      console.log(err)
       throw err;
     } else {
+      console.log('Connection to database occurred successfully')
       insertData(context, connection, data);
     }
   });
@@ -91,6 +93,7 @@ function insertData(context, connection, data) {
 
   const request = new Request(insertQuery, (err) => {
     if (err) {
+      console.log(err)
       context.log.error(err);
       throw err;
     } else {
