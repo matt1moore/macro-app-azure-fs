@@ -62,3 +62,4 @@ jobs:
 Another push
 Another push ADO.NET connection string
 Another push for firewall issue
+Another push for removing all rules for firewall
