@@ -18,4 +18,5 @@ jobs:
       uses: Azure/sql-action@v1.2
       with:
         connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
+        sql-file: ./database/fred-schema.sql
     
