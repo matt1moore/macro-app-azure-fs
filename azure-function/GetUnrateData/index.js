@@ -71,7 +71,7 @@ async function storeDataInAzureDB(context, data) {
 
   const connection = new Connection(azureConfig);
 
-  connect.on('connect', (err) => {
+  connection.on('connect', (err) => {
     if (err) {
       context.log.error(err);
       console.log(err);
