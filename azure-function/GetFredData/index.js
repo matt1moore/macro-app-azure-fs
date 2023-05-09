@@ -115,8 +115,9 @@ function insertData(context, connection, data) {
     console.log('Request made of:' + request.parameters)
     connection.execSql(request);
     isFirstRequest = false;
-  } else if (connection.state.name === 'SentClientRequest'){
+  } else if (connection.state.name === 'SentClientRequest' || connection.state.name === 'LoggedIn'){
     // More requests need to happen still
+    console.log("Awaiting Client")
     request.on('requestCompleted', () => {
       console.log('Following requests made of:' + request.parameters)
       connection.execSql(request);
@@ -125,6 +126,5 @@ function insertData(context, connection, data) {
     // Handle the case when the connection is not in the LoggedIn state
     throw new Error('Connection is not in the LoggedIn state');
   }
-  request.parameters = [];
   });
 }
