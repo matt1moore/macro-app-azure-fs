@@ -85,7 +85,7 @@ async function storeDataInAzureDB(context, data) {
 }
 
 function insertData(context, connection, data) {
-  const table = 'FredSeriesData'; // Replace with the name of your database table
+  const table = '[dbo].[FredSeriesData]'; // Replace with the name of your database table
 
   const insertQuery = `
     INSERT INTO ${table} (SeriesId, Date, Value)
