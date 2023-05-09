@@ -117,11 +117,8 @@ function insertData(context, connection, data) {
     isFirstRequest = false;
   } else if (connection.state.name === 'SentClientRequest' || connection.state.name === 'LoggedIn'){
     // More requests need to happen still
-    console.log("Awaiting Client")
-    request.on('requestCompleted', () => {
-      console.log('Following requests made of:' + request.parameters)
-      connection.execSql(request);
-    });
+    console.log('Following requests made of:' + request.parameters)
+    connection.execSql(request);
   } else {
     // Handle the case when the connection is not in the LoggedIn state
     throw new Error('Connection is not in the LoggedIn state');

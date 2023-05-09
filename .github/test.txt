@@ -68,3 +68,5 @@ Small deployment change, stop due to stopped func
 Forgot to restart the func app in azure portal
 
 Forgot to start the func app
+
+Function app not deploying
