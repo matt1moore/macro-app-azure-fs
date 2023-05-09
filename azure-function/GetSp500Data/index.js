@@ -6,21 +6,10 @@ require('dotenv').config();
 module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
-    const unemploymentData = await fetchData('UNRATE');
-    // const cpiInflationData = await fetchData('CPIAUCSL');
-    // const gdpPerCapitaData = await fetchData('A939RX0Q048SBEA');
-    // const interestRatesData = await fetchData('DFF');
-    // const housingInflationData = await fetchData('USSTHPI');
+    const sp500Data = await fetchData('SP500');
 
     // Store data in Azure Database
-    await storeDataInAzureDB(context,
-      unemploymentData
-      // [, cpiInflationData,
-      // gdpPerCapitaData,
-      // interestRatesData,
-      // housingInflationData,
-      // sp500Data, ]
-    );
+    await storeDataInAzureDB(context, sp500Data);
 
     context.res = {
       status: 200,
