@@ -104,17 +104,17 @@ function insertData(context, connection, data) {
     }
   });
 
-  request.on('requestCompleted', () => {
-    request.parameters = [];
-  });
-  
   data.forEach((item) => {
     request.addParameter('seriesId', TYPES.NVarChar, item.seriesId);
     request.addParameter('date', TYPES.Date, new Date(item.date));
     request.addParameter('value', TYPES.Float, item.value);
 
     if (connection.state.name === 'LoggedIn') {
-        connection.execSql(request);
+        console.log(connection.state.name);
+        request.on('requestCompleted', () => {
+            connection.execSql(request);
+            request.parameters = [];
+        });
       } else {
         // Handle the case when the connection is not in the LoggedIn state
         console.log(connection.state.name);
