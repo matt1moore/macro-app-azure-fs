@@ -109,14 +109,12 @@ function insertData(context, connection, data) {
   request.addParameter('value', TYPES.Float, item.value);
 
   if (connection.state.name === 'LoggedIn') {
-    request.on('requestCompleted', () => {
-      console.log('Request made of:' + request)
-      connection.execSql(request);
-      request.parameters = [];
-    });
+    console.log('Request made of:' + request)
+    connection.execSql(request);
   } else {
     // Handle the case when the connection is not in the LoggedIn state
     throw new Error('Connection is not in the LoggedIn state');
   }
+  request.parameters = [];
   });
 }
