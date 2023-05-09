@@ -111,7 +111,7 @@ function insertData(context, connection, data) {
 
     if (connection.state.name === 'LoggedIn') {
         request.on('requestCompleted', () => {
-            console.log(request)
+            console.log(request.parameters)
             connection.execSql(request);
             request.parameters = [];
         });
