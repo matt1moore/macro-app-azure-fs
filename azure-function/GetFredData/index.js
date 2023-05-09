@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { Connection, Request } = require('tedious');
+const { ConnectionPool, TYPES } = require('tedious-connection-pool');
 const { TYPES } = require('tedious')
 require('dotenv').config();
 
@@ -85,6 +86,56 @@ async function storeDataInAzureDB(context, data) {
   connection.connect();
 }
 
+async function insertData(context, data) {
+  const poolConfig = {
+    min: 1, // Minimum number of connections in the pool
+    max: 8, // Maximum number of connections in the pool
+    log: true // Set to true for debugging
+  };
+  
+  const pool = new ConnectionPool(poolConfig, require('./config')); // Import your tedious configuration file
+  
+  await pool.acquire().then(async (connection) => {
+    const table = 'FredSeriesData'; // Replace with the name of your database table
+    const insertQuery = `
+      INSERT INTO ${table} (SeriesId, Date, Value)
+      VALUES (@seriesId, @date, @value);
+    `;
+  
+    for (const item of data) {
+      await new Promise((resolve, reject) => {
+        const request = new Request(insertQuery, (err) => {
+          if (err) {
+            console.log(err);
+            context.log.error(err);
+            reject(err);
+          } else {
+            context.log('Request made successfully');
+            console.log('Request made successfully');
+            resolve();
+          }
+        });
+  
+        request.addParameter('seriesId', TYPES.NVarChar, item.seriesId);
+        request.addParameter('date', TYPES.Date, new Date(item.date));
+        request.addParameter('value', TYPES.Float, item.value);
+  
+        connection.execSql(request);
+      });
+    }
+    pool.release(connection);
+    context.log('All requests made successfully');
+    console.log('All requests made successfully');
+  }).catch((err) => {
+    console.error('Error acquiring connection from pool:', err);
+    context.log.error('Error acquiring connection from pool:', err);
+  });
+}
+  
+
+  
+
+/*
 function insertData(context, connection, data) {
   const table = 'FredSeriesData'; // Replace with the name of your database table
 
@@ -125,3 +176,5 @@ function insertData(context, connection, data) {
   }
   });
 }
+
+*/
