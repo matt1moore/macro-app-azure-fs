@@ -66,3 +66,5 @@ Another push for removing all rules for firewall
 Another minor change for deployment
 Small deployment change, stop due to stopped func
 Forgot to restart the func app in azure portal
+
+Forgot to start the func app
