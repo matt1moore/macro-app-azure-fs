@@ -14,14 +14,14 @@ module.exports = async function (context, req) {
     // const sp500Data = await fetchData('SP500');
 
     // Store data in Azure Database
-    await storeDataInAzureDB(context, [
-      unemploymentData,
-      cpiInflationData,
-      gdpPerCapitaData,
-      interestRatesData,
-      housingInflationData,
-      sp500Data,
-    ]);
+    await storeDataInAzureDB(context,
+      unemploymentData
+      // [, cpiInflationData,
+      // gdpPerCapitaData,
+      // interestRatesData,
+      // housingInflationData,
+      // sp500Data, ]
+    );
 
     context.res = {
       status: 200,
@@ -104,6 +104,8 @@ async function insertData(context, connection, data) {
       connection.close();
     }
   });
+
+  const item = data
 
   request.addParameter('seriesId', TYPES.NVarChar, item.seriesId);
   request.addParameter('date', TYPES.Date, new Date(item.date));
