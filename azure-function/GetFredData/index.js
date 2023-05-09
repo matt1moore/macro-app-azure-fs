@@ -91,6 +91,8 @@ function insertData(context, connection, data) {
     INSERT INTO ${table} (SeriesId, Date, Value)
     VALUES (@seriesId, @date, @value);
   `;
+
+  let isFirstRequest = true;
   data.forEach((item) => {
     const request = new Request(insertQuery, (err) => {
     if (err) {
@@ -108,9 +110,16 @@ function insertData(context, connection, data) {
   request.addParameter('date', TYPES.Date, new Date(item.date));
   request.addParameter('value', TYPES.Float, item.value);
 
-  if (connection.state.name === 'LoggedIn') {
-    console.log('Request made of:' + request)
+  if (connection.state.name === 'LoggedIn' && isFirstRequest) {
+    console.log('Request made of:' + request.parameters)
     connection.execSql(request);
+    isFirstRequest = false;
+  } else if (connection.state.name === 'LoggedIn'){
+    // More requests need to happen still
+    request.on('requestCompleted', () => {
+      console.log('Following requests made of:' + request.parameters)
+      connection.execSql(request);
+    });
   } else {
     // Handle the case when the connection is not in the LoggedIn state
     throw new Error('Connection is not in the LoggedIn state');
