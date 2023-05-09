@@ -55,6 +55,7 @@ async function fetchData(seriesId) {
 async function storeDataInAzureDB(context, data) {
   const azureConfig = {
     server: 'final-economic-server.database.windows.net',
+    database: 'main_fred_db',
     authentication: {
       type: 'default',
       options: {
@@ -63,7 +64,7 @@ async function storeDataInAzureDB(context, data) {
       },
     },
     options: {
-      databaseName: 'main_fred_db',
+      database: 'main_fred_db',
       encrypt: true,
     },
   };
