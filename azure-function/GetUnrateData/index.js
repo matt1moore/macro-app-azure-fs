@@ -1,17 +1,17 @@
 const axios = require('axios');
-const { Connection, Request } = require('tedious');
-const { ConnectionPool, TYPES } = require('tedious-connection-pool');
+const { Connection, Request, TYPES } = require('tedious');
+const { ConnectionPool } = require('tedious-connection-pool');
 require('dotenv').config();
 
 module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
     const unemploymentData = await fetchData('UNRATE');
-    const cpiInflationData = await fetchData('CPIAUCSL');
-    const gdpPerCapitaData = await fetchData('A939RX0Q048SBEA');
-    const interestRatesData = await fetchData('DFF');
-    const housingInflationData = await fetchData('USSTHPI');
-    const sp500Data = await fetchData('SP500');
+    // const cpiInflationData = await fetchData('CPIAUCSL');
+    // const gdpPerCapitaData = await fetchData('A939RX0Q048SBEA');
+    // const interestRatesData = await fetchData('DFF');
+    // const housingInflationData = await fetchData('USSTHPI');
+    // const sp500Data = await fetchData('SP500');
 
     // Store data in Azure Database
     await storeDataInAzureDB(context, [
@@ -68,73 +68,24 @@ async function storeDataInAzureDB(context, data) {
       encrypt: true,
     },
   };
-  const poolConfig = {
-    min: 1, // Minimum number of connections in the pool
-    max: 8, // Maximum number of connections in the pool
-    log: true // Set to true for debugging
-  };
 
-  // const connection = new Connection(azureConfig);
-  const pool = new ConnectionPool(poolConfig, azureConfig); // Import your tedious configuration file
+  const connection = new Connection(azureConfig);
 
-  pool.on('connect', (err) => {
+  connect.on('connect', (err) => {
     if (err) {
       context.log.error(err);
       console.log(err);
       throw new Error('Connection is not in the LoggedIn state');
     } else {
       console.log('Connection to database occurred successfully')
-      insertData(context, pool, data);
+      insertData(context, connection, data);
     }
   });
 
-  // connection.connect();
-}
-
-async function insertData(context, pool, data) {
-
-  await pool.acquire().then(async (connection) => {
-    const table = 'FredSeriesData'; // Replace with the name of your database table
-    const insertQuery = `
-      INSERT INTO ${table} (SeriesId, Date, Value)
-      VALUES (@seriesId, @date, @value);
-    `;
-  
-    for (const item of data) {
-      await new Promise((resolve, reject) => {
-        const request = new Request(insertQuery, (err) => {
-          if (err) {
-            console.log(err);
-            context.log.error(err);
-            reject(err);
-          } else {
-            context.log('Request made successfully');
-            console.log('Request made successfully');
-            resolve();
-          }
-        });
-  
-        request.addParameter('seriesId', TYPES.NVarChar, item.seriesId);
-        request.addParameter('date', TYPES.Date, new Date(item.date));
-        request.addParameter('value', TYPES.Float, item.value);
-  
-        connection.execSql(request);
-      });
-    }
-    pool.release(connection);
-    context.log('All requests made successfully');
-    console.log('All requests made successfully');
-  }).catch((err) => {
-    console.error('Error acquiring connection from pool:', err);
-    context.log.error('Error acquiring connection from pool:', err);
-  });
+  connection.connect();
 }
   
-
-  
-
-/*
-function insertData(context, connection, data) {
+async function insertData(context, connection, data) {
   const table = 'FredSeriesData'; // Replace with the name of your database table
 
   const insertQuery = `
@@ -142,9 +93,7 @@ function insertData(context, connection, data) {
     VALUES (@seriesId, @date, @value);
   `;
 
-  let isFirstRequest = true;
-  data.forEach((item) => {
-    const request = new Request(insertQuery, (err) => {
+  const request = new Request(insertQuery, (err) => {
     if (err) {
       console.log(err)
       context.log.error(err);
@@ -160,19 +109,52 @@ function insertData(context, connection, data) {
   request.addParameter('date', TYPES.Date, new Date(item.date));
   request.addParameter('value', TYPES.Float, item.value);
 
-  if (connection.state.name === 'LoggedIn' && isFirstRequest) {
+  try {
     console.log('Request made of:' + request.parameters)
     connection.execSql(request);
-    isFirstRequest = false;
-  } else if (connection.state.name === 'SentClientRequest' || connection.state.name === 'LoggedIn'){
-    // More requests need to happen still
-    console.log('Following requests made of:' + request.parameters)
-    connection.execSql(request);
-  } else {
+  } catch {
     // Handle the case when the connection is not in the LoggedIn state
     throw new Error('Connection is not in the LoggedIn state');
   }
-  });
 }
 
-*/
+/*
+async function insertData(context, pool, data) {
+
+    await pool.acquire().then(async (connection) => {
+      const table = 'FredSeriesData'; // Replace with the name of your database table
+      const insertQuery = `
+        INSERT INTO ${table} (SeriesId, Date, Value)
+        VALUES (@seriesId, @date, @value);
+      `;
+    
+      for (const item of data) {
+        await new Promise((resolve, reject) => {
+          const request = new Request(insertQuery, (err) => {
+            if (err) {
+              console.log(err);
+              context.log.error(err);
+              reject(err);
+            } else {
+              context.log('Request made successfully');
+              console.log('Request made successfully');
+              resolve();
+            }
+          });
+    
+          request.addParameter('seriesId', TYPES.NVarChar, item.seriesId);
+          request.addParameter('date', TYPES.Date, new Date(item.date));
+          request.addParameter('value', TYPES.Float, item.value);
+    
+          connection.execSql(request);
+        });
+      }
+      pool.release(connection);
+      context.log('All requests made successfully');
+      console.log('All requests made successfully');
+    }).catch((err) => {
+      console.error('Error acquiring connection from pool:', err);
+      context.log.error('Error acquiring connection from pool:', err);
+    });
+  }
+  */
