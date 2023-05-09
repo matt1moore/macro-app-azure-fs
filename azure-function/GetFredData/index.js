@@ -91,33 +91,32 @@ function insertData(context, connection, data) {
     INSERT INTO ${table} (SeriesId, Date, Value)
     VALUES (@seriesId, @date, @value);
   `;
-
-  const request = new Request(insertQuery, (err) => {
+  data.forEach((item) => {
+    const request = new Request(insertQuery, (err) => {
     if (err) {
       console.log(err)
       context.log.error(err);
       throw err;
     } else {
-      context.log('Data inserted successfully');
-      console.log('Data inserted successfully')
+      context.log('Request made successfully');
+      console.log('Request made successfully');
       connection.close();
     }
   });
 
-  data.forEach((item) => {
-    request.addParameter('seriesId', TYPES.NVarChar, item.seriesId);
-    request.addParameter('date', TYPES.Date, new Date(item.date));
-    request.addParameter('value', TYPES.Float, item.value);
+  request.addParameter('seriesId', TYPES.NVarChar, item.seriesId);
+  request.addParameter('date', TYPES.Date, new Date(item.date));
+  request.addParameter('value', TYPES.Float, item.value);
 
-    if (connection.state.name === 'LoggedIn') {
-        request.on('requestCompleted', () => {
-            console.log(request.parameters)
-            connection.execSql(request);
-            request.parameters = [];
-        });
-      } else {
-        // Handle the case when the connection is not in the LoggedIn state
-        throw new Error('Connection is not in the LoggedIn state');
-    }
+  if (connection.state.name === 'LoggedIn') {
+    request.on('requestCompleted', () => {
+      console.log('Request made of:' + request)
+      connection.execSql(request);
+      request.parameters = [];
+    });
+  } else {
+    // Handle the case when the connection is not in the LoggedIn state
+    throw new Error('Connection is not in the LoggedIn state');
+  }
   });
 }
