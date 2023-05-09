@@ -68,32 +68,31 @@ async function storeDataInAzureDB(context, data) {
       encrypt: true,
     },
   };
+  const poolConfig = {
+    min: 1, // Minimum number of connections in the pool
+    max: 8, // Maximum number of connections in the pool
+    log: true // Set to true for debugging
+  };
 
-  const connection = new Connection(azureConfig);
+  // const connection = new Connection(azureConfig);
+  const pool = new ConnectionPool(poolConfig, azureConfig); // Import your tedious configuration file
 
-  connection.on('connect', (err) => {
+  pool.on('connect', (err) => {
     if (err) {
       context.log.error(err);
       console.log(err);
       throw new Error('Connection is not in the LoggedIn state');
     } else {
       console.log('Connection to database occurred successfully')
-      insertData(context, connection, data);
+      insertData(context, pool, data);
     }
   });
 
-  connection.connect();
+  // connection.connect();
 }
 
-async function insertData(context, data) {
-  const poolConfig = {
-    min: 1, // Minimum number of connections in the pool
-    max: 8, // Maximum number of connections in the pool
-    log: true // Set to true for debugging
-  };
-  
-  const pool = new ConnectionPool(poolConfig, require('./config')); // Import your tedious configuration file
-  
+async function insertData(context, pool, data) {
+
   await pool.acquire().then(async (connection) => {
     const table = 'FredSeriesData'; // Replace with the name of your database table
     const insertQuery = `
