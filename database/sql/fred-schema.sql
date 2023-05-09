@@ -1,6 +1,3 @@
-IF OBJECT_ID('FredSeriesData', 'U') IS NOT NULL 
-    DROP TABLE FredSeriesData;
-
 CREATE TABLE FredSeriesData (
   Id INT IDENTITY(1,1) PRIMARY KEY,
   SeriesId NVARCHAR(50) NOT NULL,
