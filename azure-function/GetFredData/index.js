@@ -114,7 +114,7 @@ function insertData(context, connection, data) {
     console.log('Request made of:' + request.parameters)
     connection.execSql(request);
     isFirstRequest = false;
-  } else if (connection.state.name === 'LoggedIn'){
+  } else if (connection.state.name === 'SentClientRequest'){
     // More requests need to happen still
     request.on('requestCompleted', () => {
       console.log('Following requests made of:' + request.parameters)
