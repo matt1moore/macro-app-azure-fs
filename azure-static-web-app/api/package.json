@@ -14,5 +14,10 @@
     "azure"
   ],
   "author": "Matt Moore",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "azure-function-core-tools": "^0.0.1-security",
+    "azure-functions-core-tools": "^4.0.5148",
+    "mssql": "^9.1.1"
+  }
 }
