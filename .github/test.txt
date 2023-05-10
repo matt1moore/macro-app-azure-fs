@@ -72,3 +72,5 @@ Forgot to start the func app
 Function app not deploying
 
 Rerunning
+
+Internal error for static web app, so rerunning...
