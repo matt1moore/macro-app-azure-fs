@@ -17,18 +17,18 @@ module.exports = async function (context, req) {
     // Fetch data from FRED API
     // const historicData = await fetchData('UNRATE');
     // const historicData = await fetchData('CPIAUCSL');
-    const historicData = await fetchData('A939RX0Q048SBEA');
+    // const historicData = await fetchData('A939RX0Q048SBEA');
+    const historicData = await fetchData('UMCSI');
     // const historicData = await fetchData('DFF');
+    // const historicData = await fetchData('HOUST');
     // const historicData = await fetchData('USSTHPI');
     // const historicData = await fetchData('GDPC1');
-    // const historicData = await fetchData('HOUST');
     // const historicData = await fetchData('DJIA');
     // const historicData = await fetchData('FEDFUNDS');
     // const historicData = await fetchData('DGS10');
     // const historicData = await fetchData('BOPGSTB');
     // const historicData = await fetchData('BOPGEX');
     // const historicData = await fetchData('BOPGSV');
-    // const historicData = await fetchData('UMCSI');
 
     // Store data in Azure Database
     await storeDataInAzureDB(context, historicData);
