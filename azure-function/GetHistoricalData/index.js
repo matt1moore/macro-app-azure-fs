@@ -82,7 +82,7 @@ async function insertData(context, connection, data) {
 
   for (const item of data) {
     insertQuery += `(@seriesId_${values.length}, @date_${values.length}, @value_${values.length}), `;
-    values.push(item.seriesId, new Date(item.date), item.value);
+    values.push(item.seriesId, item.date, item.value);
   }
 
   // Remove the trailing comma and space
@@ -109,7 +109,8 @@ async function insertData(context, connection, data) {
   for (let i = 0; i < values.length; i++) {
     const paramName = `date_${i}`;
     const paramType = TYPES.Date;
-    request.addParameter(paramName, paramType, values[i][1]);
+    console.log(values[i][1])
+    request.addParameter(paramName, paramType, new Date(values[i][1]));
   }
 
   for (let i = 0; i < values.length; i++) {
