@@ -16,9 +16,9 @@ module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
     // const historicData = await fetchData('UNRATE');
-    // const historicData = await fetchData('CPIAUCSL');
+    const historicData = await fetchData('CPIAUCSL');
     // const historicData = await fetchData('A939RX0Q048SBEA');
-    const historicData = await fetchData('SP500');
+    // const historicData = await fetchData('SP500');
     // const historicData = await fetchData('HOUST');
     // const historicData = await fetchData('USSTHPI');
     // const historicData = await fetchData('GDPC1');
