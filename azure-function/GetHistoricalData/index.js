@@ -109,7 +109,6 @@ async function insertData(context, connection, data) {
   for (let i = 0; i < values.length; i++) {
     const paramName = `date_${i}`;
     const paramType = TYPES.Date;
-    console.log(values[i][1])
     request.addParameter(paramName, paramType, new Date(values[i][1]));
   }
 
