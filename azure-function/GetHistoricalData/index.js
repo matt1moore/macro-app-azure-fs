@@ -90,18 +90,20 @@ async function insertData(context, connection, data) {
   let insertQuery = `INSERT INTO ${table} (SeriesId, Date, Value) VALUES `;
   const values = [];
 
+  const i = 0;
   for (const item of data) {
-    if (values.length >= ITEM_LOWER_LIMIT && values.length < ITEM_UPPER_LIMIT) {
+    if (i >= ITEM_LOWER_LIMIT && i < ITEM_UPPER_LIMIT) {
       // Conditional manages the Tedious and Azure limit on SQL parameters
-      insertQuery += `(@seriesId_${values.length - ITEM_LOWER_LIMIT},
-         @date_${values.length - ITEM_LOWER_LIMIT}, @value_${values.length - ITEM_LOWER_LIMIT}), `;
+      insertQuery += `(@seriesId_${values.length},
+         @date_${values.length}, @value_${values.length}), `;
+      values.push([item.seriesId, item.date, item.value]);
     }
-    values.push([item.seriesId, item.date, item.value]);
+    i += 1;
   }
 
   // Remove the trailing comma and space
   insertQuery = insertQuery.slice(0, -2);
-  console.log(insertQuery)
+
   const request = new Request(insertQuery, (err) => {
     if (err) {
       console.log(err);
