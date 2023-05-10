@@ -114,6 +114,20 @@ async function storeDataInAzureDB(context, data) {
 
   connection.connect();
 }
+
+function validateType(value, type) {
+  switch (type) {
+    case "NVarChar":
+      return typeof value === "string";
+    case "Date":
+      return value instanceof Date && !isNaN(value);
+    case "Float":
+      return typeof value === "number" && !isNaN(value);
+    // Add more cases for other parameter types if needed
+    default:
+      return true; // Assume the type is valid if not explicitly checked
+  }
+}
   
 async function insertData(context, connection, data) {
   const table = 'FredSeriesData'; // Replace with the name of your database table
@@ -124,10 +138,21 @@ async function insertData(context, connection, data) {
   var i = 0;
   for (const item of data) {
     if (i >= ITEM_LOWER_LIMIT && i < ITEM_UPPER_LIMIT) {
-      // Conditional manages the Tedious and Azure limit on SQL parameters
+      // Conditional manages the Tedious and Azure limit on SQL parameters, which is 600
+      const seriesId = item.seriesId;
+      const date = new Date(item.date);
+      const value = item.value;
+      // Perform parameter type validation
+      const isValidSeriesId = validateType(seriesId, "NVarChar");
+      const isValidDate = validateType(date, "Date");
+      const isValidValue = validateType(value, "Float");
+      // Skip the row if any of the parameter types fail validation
+      if (!isValidSeriesId || !isValidDate || !isValidValue) {
+        continue;
+      }
       insertQuery += `(@seriesId_${values.length},
          @date_${values.length}, @value_${values.length}), `;
-      values.push([item.seriesId, item.date, item.value]);
+      values.push([seriesId, date, value]);
     }
     i += 1;
   }

@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Create interactive line charts
   createLineChart('CPIAUCSL', infChartElement);
   createLineChart('UNRATE', unemploymentChartElement);
-  createLineChart('DFF', interestCurrentElement);
+  createLineChart('DFF', interestChartElement);
   // Call createLineChart for other indicators
   
   // Add more functions for other chart types and interactive elements
