@@ -1,22 +1,10 @@
 const sql = require('mssql');
 
+const AZURE_CONN_STRING = process.env["AzureSQLConnectionString"];
+
 module.exports = async function (context, req) {
   // Azure SQL Database configuration
-  const config = {
-    server: 'final-economic-server.database.windows.net',
-    database: 'main_fred_db',
-    authentication: {
-      type: 'default',
-      options: {
-        userName: process.env.AZURE_DB_USERNAME,
-        password: process.env.AZURE_DB_PASS,
-      },
-    },
-    options: {
-      database: 'main_fred_db',
-      encrypt: true,
-    },
-  };
+  const pool = await sql.connect(AZURE_CONN_STRING);    
 
   try {
     // Connect to the Azure SQL Database
