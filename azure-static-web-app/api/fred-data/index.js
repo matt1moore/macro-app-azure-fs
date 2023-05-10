@@ -1,4 +1,3 @@
-const azure = require('azure-functions-core-tools');
 const sql = require('mssql');
 
 module.exports = async function (context, req) {
