@@ -1,3 +1,14 @@
+/*******************************************************************
+ * Name: Matthew Moore
+ * Date: 5/10/2023
+ * Subject: Data Science Lab
+ * Project: Economic Dashboard
+ * File: GetCPIInfData - API Call
+ * Description: This file is deployed as a function app that grabs the
+ * most recent instance of a CPI inflationary rate reading from FRED.
+ * Make sure the database has integrity to prevent duplicates. Prior 
+ * to triggering this function daily.
+ *******************************************************************/
 const axios = require('axios');
 const { Connection, Request, TYPES } = require('tedious');
 require('dotenv').config();
@@ -6,29 +17,10 @@ module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
     const unemploymentData = await fetchData('UNRATE');
-    // const cpiInflationData = await fetchData('CPIAUCSL');
-    // const interestRatesData = await fetchData('DFF');
-    // const housingInflationData = await fetchData('USSTHPI');
-    // const gdpData = await fetchData('GDPC1');
-    // const housingStartsData = await fetchData('HOUST');
-    // const dowJonesData = await fetchData('DJIA');
-    // const federalFundsRateData = await fetchData('FEDFUNDS');
-    // const treasuryRateData = await fetchData('DGS10');
-    // const balanceOnGoodsAndServicesData = await fetchData('BOPGSTB');
-    // const balanceOnGoodsData = await fetchData('BOPGEX');
-    // const balanceOnServicesData = await fetchData('BOPGSV');
-    // const consumerSentimentData = await fetchData('UMCSI');
 
 
     // Store data in Azure Database
-    await storeDataInAzureDB(context,
-      unemploymentData
-      // [, cpiInflationData,
-      // gdpPerCapitaData,
-      // interestRatesData,
-      // housingInflationData,
-      // sp500Data, ]
-    );
+    await storeDataInAzureDB(context, unemploymentData);
 
     context.res = {
       status: 200,

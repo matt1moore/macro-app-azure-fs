@@ -1,3 +1,14 @@
+/*******************************************************************
+ * Name: Matthew Moore
+ * Date: 5/10/2023
+ * Subject: Data Science Lab
+ * Project: Economic Dashboard
+ * File: GetGDPpcData - API Call
+ * Description: This file is deployed as a function app that grabs the
+ * most recent instance of a Gross Domestic Product per capita reading from FRED.
+ * Make sure the database has integrity to prevent duplicates. Prior 
+ * to triggering this function daily.
+ *******************************************************************/
 const axios = require('axios');
 const { Connection, Request, TYPES } = require('tedious');
 require('dotenv').config();
@@ -6,7 +17,6 @@ module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
     const gdppercapitaData = await fetchData('A939RX0Q048SBEA');
-
     // Store data in Azure Database
     await storeDataInAzureDB(context, gdppercapitaData);
 

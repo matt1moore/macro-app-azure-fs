@@ -3,9 +3,9 @@
  * Date: 5/10/2023
  * Subject: Data Science Lab
  * Project: Economic Dashboard
- * File: GetSp500Data - API Call
+ * File: GetFFRData - API Call
  * Description: This file is deployed as a function app that grabs the
- * most recent instance of a S&P500 point reading from FRED.
+ * most recent instance of a Federal Funds Rate reading from FRED.
  * Make sure the database has integrity to prevent duplicates. Prior 
  * to triggering this function daily.
  *******************************************************************/
@@ -16,9 +16,9 @@ require('dotenv').config();
 module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
-    const sp500Data = await fetchData('SP500');
+    const federalFundsRateData = await fetchData('FEDFUNDS');
     // Store data in Azure Database
-    await storeDataInAzureDB(context, sp500Data);
+    await storeDataInAzureDB(context, federalFundsRateData);
 
     context.res = {
       status: 200,
@@ -116,3 +116,44 @@ async function insertData(context, connection, data) {
     throw new Error('Connection is not in the LoggedIn state');
   }
 }
+
+/*
+async function insertData(context, pool, data) {
+
+    await pool.acquire().then(async (connection) => {
+      const table = 'FredSeriesData'; // Replace with the name of your database table
+      const insertQuery = `
+        INSERT INTO ${table} (SeriesId, Date, Value)
+        VALUES (@seriesId, @date, @value);
+      `;
+    
+      for (const item of data) {
+        await new Promise((resolve, reject) => {
+          const request = new Request(insertQuery, (err) => {
+            if (err) {
+              console.log(err);
+              context.log.error(err);
+              reject(err);
+            } else {
+              context.log('Request made successfully');
+              console.log('Request made successfully');
+              resolve();
+            }
+          });
+    
+          request.addParameter('seriesId', TYPES.NVarChar, item.seriesId);
+          request.addParameter('date', TYPES.Date, new Date(item.date));
+          request.addParameter('value', TYPES.Float, item.value);
+    
+          connection.execSql(request);
+        });
+      }
+      pool.release(connection);
+      context.log('All requests made successfully');
+      console.log('All requests made successfully');
+    }).catch((err) => {
+      console.error('Error acquiring connection from pool:', err);
+      context.log.error('Error acquiring connection from pool:', err);
+    });
+  }
+  */

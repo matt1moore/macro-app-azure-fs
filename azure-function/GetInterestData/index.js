@@ -3,9 +3,9 @@
  * Date: 5/10/2023
  * Subject: Data Science Lab
  * Project: Economic Dashboard
- * File: GetSp500Data - API Call
+ * File: GetInterestData - API Call
  * Description: This file is deployed as a function app that grabs the
- * most recent instance of a S&P500 point reading from FRED.
+ * most recent instance of an interest rate reading from FRED.
  * Make sure the database has integrity to prevent duplicates. Prior 
  * to triggering this function daily.
  *******************************************************************/
@@ -16,9 +16,9 @@ require('dotenv').config();
 module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
-    const sp500Data = await fetchData('SP500');
+    const interestData = await fetchData('DFF');
     // Store data in Azure Database
-    await storeDataInAzureDB(context, sp500Data);
+    await storeDataInAzureDB(context, interestData);
 
     context.res = {
       status: 200,

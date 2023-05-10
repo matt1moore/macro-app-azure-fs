@@ -5,7 +5,9 @@
  * Project: Economic Dashboard
  * File: GetHistoricData - API Call
  * Description: This file is deployed as a function app that can grab
- * all sorts of series data based on their ID's. 
+ * all sorts of series data based on their ID's. This function is intended
+ * for manual use when a database needs to be initially set up. After
+ * that point there is no need for this function.
  *******************************************************************/
 
 const axios = require('axios');
@@ -31,17 +33,18 @@ module.exports = async function (context, req) {
     // const historicData = await fetchData('DFF');
     // This fetches all GDP per capita for the US data
     // const historicData = await fetchData('A939RX0Q048SBEA');
-    // This fetches all historical SP500 data
+    // This fetches all historical SP500 points data
     const historicData = await fetchData('SP500');
-    // const historicData = await fetchData('HOUST');
+    // This fetches all historical Housing price index data
     // const historicData = await fetchData('USSTHPI');
+    // This fetches all historical GDP data
     // const historicData = await fetchData('GDPC1');
+    // This fetches all historical Dow Jones points data
     // const historicData = await fetchData('DJIA');
+    // This fetches all historical Federanl Funds Rate data
     // const historicData = await fetchData('FEDFUNDS');
+    // This fetches all historical Treasury Rate data
     // const historicData = await fetchData('DGS10');
-    // const historicData = await fetchData('BOPGSTB');
-    // const historicData = await fetchData('BOPGEX');
-    // const historicData = await fetchData('BOPGSV');
 
     // Store data in Azure Database
     await storeDataInAzureDB(context, historicData);
