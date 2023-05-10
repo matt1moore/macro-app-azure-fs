@@ -6,7 +6,7 @@ require('dotenv').config();
 // const ITEM_LOWER_LIMIT = -1;
 // const ITEM_UPPER_LIMIT = 600;
 // Add the next 600 elements
-ITEM_LOWER_LIMIT = 601;
+ITEM_LOWER_LIMIT = 600;
 ITEM_UPPER_LIMIT = 1200;
 // Add the next 600 elements
 // ITEM_LOWER_LIMIT = 1201;
@@ -94,8 +94,8 @@ async function insertData(context, connection, data) {
     if (values.length >= ITEM_LOWER_LIMIT && values.length < ITEM_UPPER_LIMIT) {
       // Conditional manages the Tedious and Azure limit on SQL parameters
       insertQuery += `(@seriesId_${values.length}, @date_${values.length}, @value_${values.length}), `;
-      values.push([item.seriesId, item.date, item.value]);
     }
+    values.push([item.seriesId, item.date, item.value]);
   }
 
   // Remove the trailing comma and space
