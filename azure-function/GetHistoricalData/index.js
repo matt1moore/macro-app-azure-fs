@@ -101,19 +101,19 @@ async function insertData(context, connection, data) {
   });
 
   for (let i = 0; i < values.length; i++) {
-    const paramName = `seriesId_${i}`;
+    const paramName = `seriesId_${i * 3}`;
     const paramType = TYPES.NVarChar;
     request.addParameter(paramName, paramType, values[i][0]);
   }
-
+  console.log(new Date(values[0][1]))
   for (let i = 0; i < values.length; i++) {
-    const paramName = `date_${i}`;
+    const paramName = `date_${i * 3}`;
     const paramType = TYPES.Date;
     request.addParameter(paramName, paramType, new Date(values[i][1]));
   }
 
   for (let i = 0; i < values.length; i++) {
-    const paramName = `value_${i}`;
+    const paramName = `value_${i * 3}`;
     const paramType = TYPES.Float;
     request.addParameter(paramName, paramType, values[i][2]);
   }
