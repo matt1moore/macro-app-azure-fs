@@ -74,3 +74,5 @@ Function app not deploying
 Rerunning
 
 Internal error for static web app, so rerunning...
+
+Internal error
