@@ -2,7 +2,15 @@ const axios = require('axios');
 const { Connection, Request, TYPES } = require('tedious');
 require('dotenv').config();
 
-PARAM_LIMIT = 600;
+// Add the first 600 elements
+// ITEM_LOWER_LIMIT = -1;
+// ITEM_UPPER_LIMIT = 600;
+// Add the next 600 elements
+// ITEM_LOWER_LIMIT = 600;
+// ITEM_UPPER_LIMIT = 1200;
+// Add the next 600 elements
+// ITEM_LOWER_LIMIT = 1200;
+// ITEM_UPPER_LIMIT = 1800;
 
 module.exports = async function (context, req) {
   try {
@@ -83,10 +91,8 @@ async function insertData(context, connection, data) {
   const values = [];
 
   for (const item of data) {
-    if (values.length > PARAM_LIMIT) {
-      // Getting close to the Tedious and Azure limit on SQL parameters
-    }
-    else {
+    if (values.length >= ITEM_LOWER_LIMIT && values.length < ITEM_UPPER_LIMIT) {
+      // Conditional manages the Tedious and Azure limit on SQL parameters
       insertQuery += `(@seriesId_${values.length}, @date_${values.length}, @value_${values.length}), `;
       values.push([item.seriesId, item.date, item.value]);
     }

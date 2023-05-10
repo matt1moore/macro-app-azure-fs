@@ -18,6 +18,6 @@ jobs:
       uses: Azure/sql-action@v1.2
       with:
         connection-string: ${{ secrets.AZURE_SQL_CONNECTION_STRING }}
-        dacpac-package: './database/dacpac/fred-series-schema.dacpac'
+        dacpac-package: './database/dacpac/fred-series-schema-v2.dacpac'
 
     
