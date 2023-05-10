@@ -119,7 +119,7 @@ async function insertData(context, connection, data) {
   }
 
   try {
-    console.log('Request made of:' + request.parameters)
+    console.log('Request made of:' + request.parameters[0])
     connection.execSql(request);
   } catch {
     // Handle the case when the connection is not in the LoggedIn state
