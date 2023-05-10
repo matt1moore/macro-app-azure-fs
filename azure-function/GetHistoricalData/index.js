@@ -3,7 +3,7 @@ const { Connection, Request, TYPES } = require('tedious');
 require('dotenv').config();
 
 // Add the first 600 elements
-// const ITEM_LOWER_LIMIT = -1;
+// const ITEM_LOWER_LIMIT = 0;
 // const ITEM_UPPER_LIMIT = 600;
 // Add the next 600 elements
 ITEM_LOWER_LIMIT = 600;
@@ -93,7 +93,8 @@ async function insertData(context, connection, data) {
   for (const item of data) {
     if (values.length >= ITEM_LOWER_LIMIT && values.length < ITEM_UPPER_LIMIT) {
       // Conditional manages the Tedious and Azure limit on SQL parameters
-      insertQuery += `(@seriesId_${values.length}, @date_${values.length}, @value_${values.length}), `;
+      insertQuery += `(@seriesId_${values.length - ITEM_LOWER_LIMIT},
+         @date_${values.length - ITEM_LOWER_LIMIT}, @value_${values.length - ITEM_LOWER_LIMIT}), `;
     }
     values.push([item.seriesId, item.date, item.value]);
   }
