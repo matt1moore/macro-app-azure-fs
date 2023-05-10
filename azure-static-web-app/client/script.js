@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // Add more elements for other charts
   
   // Fetch data from the server and populate the dashboard
-  fetchData('GDP', gdpCurrentElement, gdpAverageElement);
-  fetchData('UnemploymentRate', unemploymentCurrentElement, unemploymentAverageElement);
+  fetchData('A939RX0Q048SBEA', gdpCurrentElement, gdpAverageElement);
+  fetchData('UNRATE', unemploymentCurrentElement, unemploymentAverageElement);
   // Call fetchData for other indicators
   
   // Create interactive line charts
@@ -28,6 +28,16 @@ document.addEventListener('DOMContentLoaded', function () {
   function fetchData(indicator, currentElement, averageElement) {
     // Implement your logic to fetch data from the server for the given indicator
     // Populate the currentElement and averageElement with the fetched data
+    // Make a request to your API endpoint
+    apiUrl = '/api/fred-data?indicator=' + indicator
+    $.getJSON(apiUrl, data => {
+        // Use the retrieved data to populate the dashboard elements
+        currentElement.textContent = 'Current: ' + data;
+        averageElement.textContent = 'Average: ' + data;
+      })
+      .catch(function(error) {
+        console.error('Error fetching data:', error);
+      });
   }
   
   // Function to create a line chart
