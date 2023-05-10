@@ -5,10 +5,10 @@ require('dotenv').config();
 module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
-    const inflationData = await fetchData('DFF');
+    const interestData = await fetchData('DFF');
 
     // Store data in Azure Database
-    await storeDataInAzureDB(context, inflationData);
+    await storeDataInAzureDB(context, interestData);
 
     context.res = {
       status: 200,

@@ -7,7 +7,6 @@ module.exports = async function (context, req) {
     // Fetch data from FRED API
     const unemploymentData = await fetchData('UNRATE');
     // const cpiInflationData = await fetchData('CPIAUCSL');
-    // const gdpPerCapitaData = await fetchData('A939RX0Q048SBEA');
     // const interestRatesData = await fetchData('DFF');
     // const housingInflationData = await fetchData('USSTHPI');
     // const gdpData = await fetchData('GDPC1');

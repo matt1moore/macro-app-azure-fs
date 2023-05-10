@@ -3,7 +3,9 @@
  * Date: 5/10/2023
  * Subject: Data Science Lab
  * Project: Economic Dashboard
- * Description: This project is the construction
+ * File: GetHistoricData - API Call
+ * Description: This file is deployed as a function app that can grab
+ * all sorts of series data based on their ID's. 
  *******************************************************************/
 
 const axios = require('axios');
@@ -23,10 +25,14 @@ const ITEM_UPPER_LIMIT = 600;
 module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
+    // This fetches all historical unemployment rate data
     // const historicData = await fetchData('UNRATE');
-    const historicData = await fetchData('DFF');
+    // This fetches all historical interest rate data
+    // const historicData = await fetchData('DFF');
+    // This fetches all GDP per capita for the US data
     // const historicData = await fetchData('A939RX0Q048SBEA');
-    // const historicData = await fetchData('SP500');
+    // This fetches all historical SP500 data
+    const historicData = await fetchData('SP500');
     // const historicData = await fetchData('HOUST');
     // const historicData = await fetchData('USSTHPI');
     // const historicData = await fetchData('GDPC1');
