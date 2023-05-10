@@ -1,32 +1,32 @@
 // Wait for the document to finish loading
 document.addEventListener('DOMContentLoaded', function () {
   // Retrieve the dashboard elements
-  var gdpCurrentElement = document.getElementById('gdp-current');
-  var gdpAverageElement = document.getElementById('gdp-average');
+  var infCurrentElement = document.getElementById('inf-current');
+  var infAverageElement = document.getElementById('inf-average');
   var unemploymentCurrentElement = document.getElementById('unemployment-current');
   var unemploymentAverageElement = document.getElementById('unemployment-average');
   // Add more elements for other indicators
   
   // Retrieve the chart elements
-  var gdpChartElement = document.getElementById('gdp-chart');
+  var infChartElement = document.getElementById('inf-chart');
   var unemploymentChartElement = document.getElementById('unemployment-chart');
   // Add more elements for other charts
   
   // Fetch data from the server and populate the dashboard
-  fetchData('A939RX0Q048SBEA', gdpCurrentElement, gdpAverageElement);
-  fetchData('UNRATE', unemploymentCurrentElement, unemploymentAverageElement);
+  fetchData('CPIAUCSL', infAverageElement);
+  fetchData('UNRATE', unemploymentAverageElement);
   // Call fetchData for other indicators
   
   // Create interactive line charts
-  createLineChart('GDP', gdpChartElement);
+  createLineChart('CPIAUCSL', infChartElement);
   createLineChart('UnemploymentRate', unemploymentChartElement);
   // Call createLineChart for other indicators
   
   // Add more functions for other chart types and interactive elements
   
-  function fetchData(indicator, currentElement, averageElement) {
+  function fetchData(indicator, averageElement) {
     // Construct the API endpoint URL
-    const apiUrl = '/api/fred-data?indicator=' + indicator;
+    const apiUrl = 'http://localhost:8080/average-data?indicator=' + indicator;
   
     // Make a fetch request to the API endpoint
     fetch(apiUrl)
@@ -39,13 +39,13 @@ document.addEventListener('DOMContentLoaded', function () {
       })
       .then(data => {
         // Use the retrieved data to populate the dashboard elements
-        currentElement.textContent = 'Current: ' + data;
-        averageElement.textContent = 'Average: ' + data;
+        averageElement.textContent = 'Average: ' + data[0].AverageFSD;
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
   }
+
   
   // Function to create a line chart
   function createLineChart(indicator, chartElement) {

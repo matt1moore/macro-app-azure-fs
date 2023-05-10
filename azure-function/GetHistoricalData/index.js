@@ -3,11 +3,11 @@ const { Connection, Request, TYPES } = require('tedious');
 require('dotenv').config();
 
 // Add the first 600 elements
-// const ITEM_LOWER_LIMIT = 0;
-// const ITEM_UPPER_LIMIT = 600;
+const ITEM_LOWER_LIMIT = 0;
+const ITEM_UPPER_LIMIT = 600;
 // Add the next 600 elements
-ITEM_LOWER_LIMIT = 601;
-ITEM_UPPER_LIMIT = 1200;
+// ITEM_LOWER_LIMIT = 601;
+// ITEM_UPPER_LIMIT = 1200;
 // Add the next 600 elements
 // ITEM_LOWER_LIMIT = 1201;
 // ITEM_UPPER_LIMIT = 1800;
@@ -18,7 +18,7 @@ module.exports = async function (context, req) {
     // const historicData = await fetchData('UNRATE');
     // const historicData = await fetchData('CPIAUCSL');
     // const historicData = await fetchData('A939RX0Q048SBEA');
-    const historicData = await fetchData('DFF');
+    const historicData = await fetchData('SP500');
     // const historicData = await fetchData('HOUST');
     // const historicData = await fetchData('USSTHPI');
     // const historicData = await fetchData('GDPC1');
