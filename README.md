@@ -14,5 +14,7 @@ This project is the construction of a web application which displays FRED econom
         1. Description: Grabe the most recent data point from the inflation rate json object provided by FRED
 1. Azure Web Application
     1. Front-End - Complete
+        1. NodeJS data implementation
+        1. GraphJS visualization implementation
     1. API - Incomplete
 
