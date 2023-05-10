@@ -3,8 +3,8 @@ const { Connection, Request, TYPES } = require('tedious');
 require('dotenv').config();
 
 // Add the first 600 elements
-// const ITEM_LOWER_LIMIT = 0;
-// const ITEM_UPPER_LIMIT = 600;
+const ITEM_LOWER_LIMIT = 0;
+const ITEM_UPPER_LIMIT = 600;
 // Add the next 600 elements
 // ITEM_LOWER_LIMIT = 601;
 // ITEM_UPPER_LIMIT = 1200;
