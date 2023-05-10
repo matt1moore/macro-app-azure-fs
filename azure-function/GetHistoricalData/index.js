@@ -3,11 +3,11 @@ const { Connection, Request, TYPES } = require('tedious');
 require('dotenv').config();
 
 // Add the first 600 elements
-// const ITEM_LOWER_LIMIT = 0;
-// const ITEM_UPPER_LIMIT = 600;
+const ITEM_LOWER_LIMIT = 0;
+const ITEM_UPPER_LIMIT = 600;
 // Add the next 600 elements
-ITEM_LOWER_LIMIT = 601;
-ITEM_UPPER_LIMIT = 1200;
+// ITEM_LOWER_LIMIT = 601;
+// ITEM_UPPER_LIMIT = 1200;
 // Add the next 600 elements
 // ITEM_LOWER_LIMIT = 1201;
 // ITEM_UPPER_LIMIT = 1800;
@@ -15,7 +15,7 @@ ITEM_UPPER_LIMIT = 1200;
 module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
-    const unemploymentData = await fetchData('UNRATE');
+    const unemploymentData = await fetchData('CPIAUCSL');
 
     // Store data in Azure Database
     await storeDataInAzureDB(context, unemploymentData);
