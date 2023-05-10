@@ -10,6 +10,16 @@ module.exports = async function (context, req) {
     // const gdpPerCapitaData = await fetchData('A939RX0Q048SBEA');
     // const interestRatesData = await fetchData('DFF');
     // const housingInflationData = await fetchData('USSTHPI');
+    // const gdpData = await fetchData('GDPC1');
+    // const housingStartsData = await fetchData('HOUST');
+    // const dowJonesData = await fetchData('DJIA');
+    // const federalFundsRateData = await fetchData('FEDFUNDS');
+    // const treasuryRateData = await fetchData('DGS10');
+    // const balanceOnGoodsAndServicesData = await fetchData('BOPGSTB');
+    // const balanceOnGoodsData = await fetchData('BOPGEX');
+    // const balanceOnServicesData = await fetchData('BOPGSV');
+    // const consumerSentimentData = await fetchData('UMCSI');
+
 
     // Store data in Azure Database
     await storeDataInAzureDB(context,
