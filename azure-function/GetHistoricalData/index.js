@@ -2,6 +2,8 @@ const axios = require('axios');
 const { Connection, Request, TYPES } = require('tedious');
 require('dotenv').config();
 
+PARAM_LIMIT = 600;
+
 module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
@@ -81,8 +83,13 @@ async function insertData(context, connection, data) {
   const values = [];
 
   for (const item of data) {
-    insertQuery += `(@seriesId_${values.length}, @date_${values.length}, @value_${values.length}), `;
-    values.push([item.seriesId, item.date, item.value]);
+    if (values.length > PARAM_LIMIT) {
+      // Getting close to the Tedious and Azure limit on SQL parameters
+    }
+    else {
+      insertQuery += `(@seriesId_${values.length}, @date_${values.length}, @value_${values.length}), `;
+      values.push([item.seriesId, item.date, item.value]);
+    }
   }
 
   // Remove the trailing comma and space
@@ -101,20 +108,20 @@ async function insertData(context, connection, data) {
   });
 
   for (let i = 0; i < values.length; i++) {
-    const paramName = `seriesId_${i * 3}`;
+    const paramName = `seriesId_${i}`;
     const paramType = TYPES.NVarChar;
     request.addParameter(paramName, paramType, values[i][0]);
   }
   console.log("Here is the first element in values: " + values[0])
-  
+
   for (let i = 0; i < values.length; i++) {
-    const paramName = `date_${i * 3}`;
+    const paramName = `date_${i}`;
     const paramType = TYPES.Date;
     request.addParameter(paramName, paramType, new Date(values[i][1]));
   }
 
   for (let i = 0; i < values.length; i++) {
-    const paramName = `value_${i * 3}`;
+    const paramName = `value_${i}`;
     const paramType = TYPES.Float;
     request.addParameter(paramName, paramType, values[i][2]);
   }
