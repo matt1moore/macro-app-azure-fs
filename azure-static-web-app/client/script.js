@@ -24,18 +24,25 @@ document.addEventListener('DOMContentLoaded', function () {
   
   // Add more functions for other chart types and interactive elements
   
-  // Function to fetch data from the server
   function fetchData(indicator, currentElement, averageElement) {
-    // Implement your logic to fetch data from the server for the given indicator
-    // Populate the currentElement and averageElement with the fetched data
-    // Make a request to your API endpoint
-    apiUrl = '/api/fred-data?indicator=' + indicator
-    $.getJSON(apiUrl, data => {
+    // Construct the API endpoint URL
+    const apiUrl = '/api/fred-data?indicator=' + indicator;
+  
+    // Make a fetch request to the API endpoint
+    fetch(apiUrl)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Error fetching data');
+        }
+      })
+      .then(data => {
         // Use the retrieved data to populate the dashboard elements
         currentElement.textContent = 'Current: ' + data;
         averageElement.textContent = 'Average: ' + data;
       })
-      .catch(function(error) {
+      .catch(error => {
         console.error('Error fetching data:', error);
       });
   }
