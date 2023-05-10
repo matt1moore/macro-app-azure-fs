@@ -1,3 +1,11 @@
+/*******************************************************************
+ * Name: Matthew Moore
+ * Date: 5/10/2023
+ * Subject: Data Science Lab
+ * Project: Economic Dashboard
+ * Description: This project is the construction
+ *******************************************************************/
+
 const axios = require('axios');
 const { Connection, Request, TYPES } = require('tedious');
 require('dotenv').config();
