@@ -1,0 +1,21 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "the backend of the azure static web app that acts as a function app connecting to the db and fe",
+  "main": "./fred-data/index.js",
+  "scripts": {
+    "test": "\"test\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "macro-app-azure-fs"
+  },
+  "keywords": [
+    "fred",
+    "econ",
+    "fs",
+    "azure"
+  ],
+  "author": "Matt Moore",
+  "license": "ISC"
+}
