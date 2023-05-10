@@ -82,7 +82,7 @@ async function insertData(context, connection, data) {
 
   for (const item of data) {
     insertQuery += `(@seriesId_${values.length}, @date_${values.length}, @value_${values.length}), `;
-    values.push(item.seriesId, item.date, item.value);
+    values.push([item.seriesId, item.date, item.value]);
   }
 
   // Remove the trailing comma and space
@@ -105,7 +105,8 @@ async function insertData(context, connection, data) {
     const paramType = TYPES.NVarChar;
     request.addParameter(paramName, paramType, values[i][0]);
   }
-  console.log(new Date(values[0][1]))
+  console.log("Here is the first element in values: " + values[0])
+  
   for (let i = 0; i < values.length; i++) {
     const paramName = `date_${i * 3}`;
     const paramType = TYPES.Date;
