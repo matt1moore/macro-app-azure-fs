@@ -1,6 +1,5 @@
 const axios = require('axios');
 const { Connection, Request, TYPES } = require('tedious');
-const { ConnectionPool } = require('tedious-connection-pool');
 require('dotenv').config();
 
 module.exports = async function (context, req) {

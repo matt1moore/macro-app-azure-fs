@@ -5,10 +5,10 @@ require('dotenv').config();
 module.exports = async function (context, req) {
   try {
     // Fetch data from FRED API
-    const sp500Data = await fetchData('SP500');
+    const unemploymentData = await fetchData('UNRATE');
 
     // Store data in Azure Database
-    await storeDataInAzureDB(context, sp500Data);
+    await storeDataInAzureDB(context, unemploymentData);
 
     context.res = {
       status: 200,
@@ -26,17 +26,19 @@ module.exports = async function (context, req) {
 };
 
 async function fetchData(seriesId) {
-  const apiKey = process.env.FRED_API_KEY
+  const apiKey = process.env.FRED_API_KEY;
   const url = `https://api.stlouisfed.org/fred/series/observations?series_id=${seriesId}&api_key=${apiKey}&file_type=json`;
 
   const response = await axios.get(url);
   const observations = response.data.observations;
 
-  // Extract the latest value from the observations
-  const latestObservation = observations[observations.length - 1];
-  const { date, value } = latestObservation;
+  // Extract the date and value from each observation
+  const observationData = observations.map((observation) => {
+    const { date, value } = observation;
+    return { seriesId, date, value };
+  });
 
-  return { seriesId, date, value };
+  return observationData;
 }
 
 async function storeDataInAzureDB(context, data) {
@@ -75,14 +77,20 @@ async function storeDataInAzureDB(context, data) {
 async function insertData(context, connection, data) {
   const table = 'FredSeriesData'; // Replace with the name of your database table
 
-  const insertQuery = `
-    INSERT INTO ${table} (SeriesId, Date, Value)
-    VALUES (@seriesId, @date, @value);
-  `;
+  let insertQuery = `INSERT INTO ${table} (SeriesId, Date, Value) VALUES `;
+  const values = [];
+
+  for (const item of data) {
+    insertQuery += `(@seriesId_${values.length}, @date_${values.length}, @value_${values.length}), `;
+    values.push(item.seriesId, new Date(item.date), item.value);
+  }
+
+  // Remove the trailing comma and space
+  insertQuery = insertQuery.slice(0, -2);
 
   const request = new Request(insertQuery, (err) => {
     if (err) {
-      console.log(err)
+      console.log(err);
       context.log.error(err);
       throw err;
     } else {
@@ -92,11 +100,23 @@ async function insertData(context, connection, data) {
     }
   });
 
-  const item = data
+  for (let i = 0; i < values.length; i++) {
+    const paramName = `@seriesId_${i}`;
+    const paramType = TYPES.NVarChar;
+    request.addParameter(paramName, paramType, values[i]);
+  }
 
-  request.addParameter('seriesId', TYPES.NVarChar, item.seriesId);
-  request.addParameter('date', TYPES.Date, new Date(item.date));
-  request.addParameter('value', TYPES.Float, item.value);
+  for (let i = 0; i < values.length; i++) {
+    const paramName = `@date_${i}`;
+    const paramType = TYPES.Date;
+    request.addParameter(paramName, paramType, values[i]);
+  }
+
+  for (let i = 0; i < values.length; i++) {
+    const paramName = `@value_${i}`;
+    const paramType = TYPES.Float;
+    request.addParameter(paramName, paramType, values[i]);
+  }
 
   try {
     console.log('Request made of:' + request.parameters)
