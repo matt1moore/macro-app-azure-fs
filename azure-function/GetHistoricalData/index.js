@@ -146,6 +146,7 @@ async function insertData(context, connection, data) {
       const isValidSeriesId = validateType(seriesId, "NVarChar");
       const isValidDate = validateType(date, "Date");
       const isValidValue = validateType(value, "Float");
+      console.log(isValidDate + " " + isValidSeriesId + " " + isValidValue) 
       // Skip the row if any of the parameter types fail validation
       if (!isValidSeriesId || !isValidDate || !isValidValue) {
         // Skip to the next
