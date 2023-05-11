@@ -36,7 +36,7 @@ module.exports = async function (context, req) {
     // This fetches all GDP per capita for the US data
     // const historicData = await fetchData('A939RX0Q048SBEA');
     // This fetches all historical SP500 points data
-    const historicData = await fetchData('SP500');
+    const historicData = await fetchData('CPIAUCSL');
     // This fetches all historical Housing price index data
     // const historicData = await fetchData('USSTHPI');
     // This fetches all historical GDP data
@@ -148,11 +148,13 @@ async function insertData(context, connection, data) {
       const isValidValue = validateType(value, "Float");
       // Skip the row if any of the parameter types fail validation
       if (!isValidSeriesId || !isValidDate || !isValidValue) {
-        continue;
+        // Skip to the next
       }
-      insertQuery += `(@seriesId_${values.length},
-         @date_${values.length}, @value_${values.length}), `;
-      values.push([seriesId, date, value]);
+      else {
+        insertQuery += `(@seriesId_${values.length},
+          @date_${values.length}, @value_${values.length}), `;
+        values.push([seriesId, date, value]);
+      }
     }
     i += 1;
   }
