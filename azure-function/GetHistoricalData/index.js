@@ -159,7 +159,7 @@ async function insertData(context, connection, data) {
 
   // Remove the trailing comma and space
   insertQuery = insertQuery.slice(0, -2);
-
+  console.log(insertQuery)
   const request = new Request(insertQuery, (err) => {
     if (err) {
       console.log(err);
