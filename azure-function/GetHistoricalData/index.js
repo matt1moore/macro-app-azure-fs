@@ -122,7 +122,7 @@ function validateType(value, type) {
     case "Date":
       return value instanceof Date && !isNaN(value);
     case "Float":
-      return typeof value === "number" && !isNaN(value);
+      return !isNaN(parseFloat(value));
     // Add more cases for other parameter types if needed
     default:
       return true; // Assume the type is valid if not explicitly checked
