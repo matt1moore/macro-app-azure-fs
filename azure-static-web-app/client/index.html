@@ -1,35 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Economic Indicators Timeline</title>
+  <title>Economic Indicators Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Economic Indicators Timeline</h1>
+  <h1>Economic Indicators Dashboard</h1>
 
-   <!-- Timeline section -->
-  <div class="timeline">
-    <div class="timeline-year" id="selected-year">1940</div>
-    <div class="timeline-month" id="selected-month">Jan</div>
-    <div class="draggable" id="timeline-handle"></div>
+  <!-- Current data section -->
+  <div class="current-data">
+    <h2>Current Data</h2>
+
+    <!-- Displaying big numbers for each indicator -->
+    <div class="big-number">
+      <h3>Consumer Price Index</h3>
+      <p id="inf-current"></p>
+      <p id="inf-average"></p>
+    </div>
+
+    <div class="big-number">
+      <h3>Unemployment Rate</h3>
+      <p id="unemployment-current"></p>
+      <p id="unemployment-average"></p>
+    </div>
+
+    <div class="big-number">
+      <h3>Interest Rate</h3>
+      <p id="interest-current"></p>
+      <p id="interest-average"></p>
+    </div>
+
+    <!-- Repeat the above structure for other indicators -->
+
   </div>
 
-  <!-- Containers for economic indicators -->
-  <div class="indicator-container">
-    <h2>Inflation Rate</h2>
-    <p id="inflation-value"></p>
-  </div>
+  <!-- Interactive charts section -->
+  <div class="charts">
+    <h2>Interactive Charts</h2>
 
-  <div class="indicator-container">
-    <h2>Unemployment Rate</h2>
-    <p id="unemployment-value"></p>
-  </div>
+    <!-- Line chart -->
+    <div class="line-chart">
+      <h3>Inflationary Rate</h3>
+      <canvas id="inf-chart"></canvas>
+    </div>
 
-  <div class="indicator-container">
-    <h2>Interest Rate</h2>
-    <p id="interest-value"></p>
+    <!-- Bar chart -->
+    <div class="bar-chart">
+      <h3>Unemployment Rate</h3>
+      <canvas id="unemployment-chart"></canvas>
+    </div>
+
+    <!-- Bar chart -->
+    <div class="bar-chart">
+      <h3>Interest Rate</h3>
+      <canvas id="interest-chart"></canvas>
+    </div>
+
+    <!-- Repeat the above structure for other chart types -->
+
   </div>
-  <!-- Add more containers for other economic indicators -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js"></script>
 </body>
