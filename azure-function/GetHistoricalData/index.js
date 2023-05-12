@@ -7,7 +7,10 @@
  * Description: This file is deployed as a function app that can grab
  * all sorts of series data based on their ID's. This function is intended
  * for manual use when a database needs to be initially set up. After
- * that point there is no need for this function.
+ * that point there is no need for this function. 
+ * Note: I have this function set to trigger Jan 1 of each year solely
+ * because it is easiest to set time based triggers. But, in production
+ * this function should only be used for the initial loading of the database.
  *******************************************************************/
 
 const axios = require('axios');
